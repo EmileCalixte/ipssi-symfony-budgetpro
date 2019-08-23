@@ -18,8 +18,8 @@ services:
 
   database:
     image: mysql:5.7
-    volumes:
-      - ./docker/mysql:/var/lib/mysql
+#    volumes:
+#      - ./docker/mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: symfonyweb
       MYSQL_ROOT_PASSWORD: root
