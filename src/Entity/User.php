@@ -18,7 +18,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"users","user","adminSubscriptions"})
+     * @Groups({"users","user","profile","adminSubscriptions","adminCards"})
      */
     private $id;
 
@@ -26,7 +26,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
-     * @Groups({"users","user","adminSubscriptions"})
+     * @Groups({"users","user","profile","adminSubscriptions","adminCards"})
      */
     private $firstname;
 
@@ -34,24 +34,24 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
-     * @Groups({"users","user","adminSubscriptions"})
+     * @Groups({"users","user","profile","adminSubscriptions","adminCards"})
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
      * @Assert\Email()
-     * @Groups({"users","user","adminSubscriptions"})
+     * @Groups({"users","user","profile","adminSubscriptions","adminCards"})
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
-     * @Groups({"users","user"})
+     * @Groups({"users","user","profile"})
      */
     private $apiKey;
 
@@ -63,7 +63,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"user"})
+     * @Groups({"user","profile"})
      * @Assert\Length(max=255)
      */
     private $address;
@@ -71,27 +71,27 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Length(max=255)
-     * @Groups({"user"})
+     * @Groups({"user","profile"})
      */
     private $country;
 
     /**
      * @ORM\Column(type="simple_array")
-     * @Groups({"user"})
+     * @Groups({"user","profile"})
      */
     private $roles = [];
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Subscription", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"user"})
+     * @Groups({"user","profile"})
      * @Assert\NotBlank(message="This value should not be blank and must be a valid subscription.")
      */
     private $subscription;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="user")
-     * @Groups({"user"})
+     * @Groups({"user","profile"})
      */
     private $cards;
 

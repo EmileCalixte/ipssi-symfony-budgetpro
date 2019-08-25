@@ -79,7 +79,7 @@ class FixturesCommand extends Command
         for($i = 0; $i < 20; ++$i) {
             $card = new Card();
             $card->setName(Utils::getRandomString(random_int(4, 8)));
-            $card->setCreditCartType(Utils::getRandomString(random_int(4, 6)));
+            $card->setCreditCardType(Utils::getRandomString(random_int(4, 6)));
             $card->setCreditCardNumber(Utils::getRandomString(16, '123456789'));
             $card->setCurrencyCode(strtoupper(Utils::getRandomString(3)));
             $card->setValue(random_int(0, 100000));

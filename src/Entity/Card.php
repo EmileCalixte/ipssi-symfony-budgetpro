@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
@@ -14,44 +15,54 @@ class Card
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"cards", "card", "user"})
+     * @Groups({"cards", "card", "user","profile","profileCards","adminCards"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"cards", "card", "user"})
+     * @Groups({"cards", "card", "user","profile","profileCards","adminCards"})
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"cards", "card", "user"})
+     * @Groups({"cards", "card", "user","profile","profileCards","adminCards"})
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
      */
-    private $creditCartType;
+    private $creditCardType;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"card"})
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Groups({"card","profile","profileCards","adminCards"})
+     * @Assert\NotBlank()
+     * @Assert\Length(max=255)
      */
     private $creditCardNumber;
 
     /**
      * @ORM\Column(type="string", length=3)
-     * @Groups({"card"})
+     * @Groups({"card","profile","profileCards","adminCards"})
+     * @Assert\NotBlank()
+     * @Assert\Length(max=3)
      */
     private $currencyCode;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"card"})
+     * @Groups({"card","profile","profileCards","adminCards"})
+     * @Assert\NotBlank()
      */
     private $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="cards")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"card"})
+     * @Groups({"card","adminCards"})
+     * @Assert\NotBlank()
      */
     private $user;
 
@@ -72,14 +83,14 @@ class Card
         return $this;
     }
 
-    public function getCreditCartType(): ?string
+    public function getCreditCardType(): ?string
     {
-        return $this->creditCartType;
+        return $this->creditCardType;
     }
 
-    public function setCreditCartType(string $creditCartType): self
+    public function setCreditCardType(string $creditCardType): self
     {
-        $this->creditCartType = $creditCartType;
+        $this->creditCardType = $creditCardType;
 
         return $this;
     }

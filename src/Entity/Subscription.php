@@ -17,13 +17,13 @@ class Subscription
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"subscriptions", "adminSubscriptions", "user"})
+     * @Groups({"subscriptions", "adminSubscriptions", "user","profile"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"subscriptions", "adminSubscriptions", "user"})
+     * @Groups({"subscriptions", "adminSubscriptions", "user","profile"})
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
      */
@@ -31,7 +31,7 @@ class Subscription
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"subscriptions", "adminSubscriptions", "user"})
+     * @Groups({"subscriptions", "adminSubscriptions", "user","profile"})
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
      */
@@ -39,7 +39,7 @@ class Subscription
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"subscriptions", "adminSubscriptions", "user"})
+     * @Groups({"subscriptions", "adminSubscriptions", "user","profile"})
      * @Assert\Length(max=255)
      */
     private $url;

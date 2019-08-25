@@ -13,7 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -90,7 +89,7 @@ class SubscriptionController extends AbstractFOSRestController
         foreach($validationErrors as $constraintViolation) {
             $message = $constraintViolation->getMessage();
             $propertyPath = $constraintViolation->getPropertyPath();
-            $errors[] = [ 'property' => $propertyPath, 'message' => $message];
+            $errors[] = ['property' => $propertyPath, 'message' => $message];
         }
 
         if(!empty($errors)) {
@@ -123,7 +122,7 @@ class SubscriptionController extends AbstractFOSRestController
         foreach($validationErrors as $constraintViolation) {
             $message = $constraintViolation->getMessage();
             $propertyPath = $constraintViolation->getPropertyPath();
-            $errors[] = [ 'property' => $propertyPath, 'message' => $message];
+            $errors[] = ['property' => $propertyPath, 'message' => $message];
         }
 
         if(!empty($errors)) {
