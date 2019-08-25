@@ -24,6 +24,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      * @Assert\Length(max=255)
      * @Groups({"users","user","adminSubscriptions"})
      */
@@ -31,6 +32,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      * @Assert\Length(max=255)
      * @Groups({"users","user","adminSubscriptions"})
      */
@@ -38,6 +40,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      * @Assert\Length(max=255)
      * @Assert\Email()
      * @Groups({"users","user","adminSubscriptions"})
@@ -46,6 +49,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      * @Assert\Length(max=255)
      * @Groups({"users","user"})
      */
@@ -53,12 +57,14 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user"})
+     * @Assert\Length(max=255)
      */
     private $address;
 
@@ -79,6 +85,7 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Subscription", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"user"})
+     * @Assert\NotBlank(message="This value should not be blank and must be a valid subscription.")
      */
     private $subscription;
 
@@ -224,6 +231,11 @@ class User implements UserInterface
         $this->subscription = $subscription;
 
         return $this;
+    }
+
+    public function setSubscriptionById(int $id): self
+    {
+
     }
 
     /**
