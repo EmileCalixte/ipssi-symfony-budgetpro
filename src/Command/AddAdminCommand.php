@@ -80,6 +80,13 @@ class AddAdminCommand extends Command
             $this->em->flush();
 
             $io->success(sprintf('User created! API key : %s', $user->getApiKey()));
+        } else {
+            $user->setRoles([self::ROLE_USER, self::ROLE_ADMIN]);
+
+            $this->em->persist($user);
+            $this->em->flush();
+
+            $io->success('This user is now admin');
         }
 
     }
