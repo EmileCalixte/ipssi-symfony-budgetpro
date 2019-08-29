@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,6 +49,14 @@ class CardController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/admin/cards")
      * @Rest\View(serializerGroups={"adminCards"})
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns the list of cards"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
      */
     public function getApiAdminCards()
     {
@@ -58,6 +67,25 @@ class CardController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/admin/cards/{id}")
      * @Rest\View(serializerGroups={"adminCards"})
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the card",
+     *     required=true
+     * )
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns details of the card"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Card not found"
+     * )
      */
     public function getApiAdminCard(Card $card)
     {
@@ -67,6 +95,82 @@ class CardController extends AbstractFOSRestController
     /**
      * @Rest\Post("/api/admin/cards")
      * @Rest\View(serializerGroups={"adminCards"})
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="body",
+     *     type="string",
+     *     description="The name of the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="userId",
+     *     in="body",
+     *     type="number",
+     *     description="The ID of the owner of the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *         type="number"
+     *
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="creditCardType",
+     *     in="body",
+     *     type="string",
+     *     description="The type of the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="creditCardNumber",
+     *     in="body",
+     *     type="number",
+     *     description="The number of the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="number"
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="currencyCode",
+     *     in="body",
+     *     type="string",
+     *     description="The currency code of the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=3
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="value",
+     *     in="body",
+     *     type="number",
+     *     description="The value on the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="number"
+     *     )
+     * )
+     * @SWG\Response(
+     *     response="201",
+     *     description="Card created"
+     * )
+     * @SWG\Response(
+     *     response="400",
+     *     description="Malformed request body"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
      */
     public function postApiAdminCard(ValidatorInterface $validator, Request $request, UserRepository $userRepository, CardProvider $cardProvider)
     {
@@ -117,6 +221,77 @@ class CardController extends AbstractFOSRestController
     /**
      * @Rest\Patch("/api/admin/cards/{id}")
      * @Rest\View(serializerGroups={"adminCards"})
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the card",
+     *     required=true
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="body",
+     *     type="string",
+     *     description="The name of the card",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="creditCardType",
+     *     in="body",
+     *     type="string",
+     *     description="The type of the card",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="creditCardNumber",
+     *     in="body",
+     *     type="number",
+     *     description="The number of the card",
+     *     @SWG\Schema(
+     *          type="number"
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="currencyCode",
+     *     in="body",
+     *     type="string",
+     *     description="The currency code of the card",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=3
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="value",
+     *     in="body",
+     *     type="number",
+     *     description="The value on the card",
+     *     @SWG\Schema(
+     *          type="number"
+     *     )
+     * )
+     * @SWG\Response(
+     *     response="200",
+     *     description="Card edited"
+     * )
+     * @SWG\Response(
+     *     response="400",
+     *     description="Malformed request body"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Card not found"
+     * )
      */
     public function patchApiAdminCard(Card $card, ValidatorInterface $validator, Request $request, CardProvider $cardProvider)
     {
@@ -154,6 +329,25 @@ class CardController extends AbstractFOSRestController
 
     /**
      * @Rest\Delete("/api/admin/cards/{id}")
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the card",
+     *     required=true
+     * )
+     * @SWG\Response(
+     *     response="204",
+     *     description="Card deleted"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Card not found"
+     * )
      */
     public function deleteApiAdminCard(Card $card)
     {

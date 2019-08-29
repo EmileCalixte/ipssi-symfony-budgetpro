@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,10 @@ class SubscriptionController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/subscriptions")
      * @Rest\View(serializerGroups={"subscriptions"})
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns list of subscriptions"
+     * )
      */
     public function getApiSubscriptions()
     {
@@ -49,6 +54,21 @@ class SubscriptionController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/subscriptions/{id}")
      * @Rest\View(serializerGroups={"subscriptions"})
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the subscription",
+     *     required=true
+     * )
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns details of the subscription"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Subscription not found"
+     * )
      */
     public function getApiSubscription(Subscription $subscription)
     {
@@ -60,6 +80,14 @@ class SubscriptionController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/admin/subscriptions")
      * @Rest\View(serializerGroups={"adminSubscriptions"})
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns list of subscriptions"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
      */
     public function getApiAdminSubscriptions()
     {
@@ -70,6 +98,25 @@ class SubscriptionController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/admin/subscriptions/{id}")
      * @Rest\View(serializerGroups={"adminSubscriptions"})
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the subscription",
+     *     required=true
+     * )
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns details of the subscription"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Subscription not found"
+     * )
      */
     public function getApiAdminSubscription(Subscription $subscription)
     {
@@ -80,6 +127,50 @@ class SubscriptionController extends AbstractFOSRestController
      * @Rest\Post("/api/admin/subscriptions")
      * @ParamConverter("subscription", converter="fos_rest.request_body")
      * @Rest\View(serializerGroups={"adminSubscriptions"})
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="body",
+     *     type="string",
+     *     description="The name of the subscription",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="slogan",
+     *     in="body",
+     *     type="string",
+     *     description="The slogan of the subscription",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="url",
+     *     in="body",
+     *     type="string",
+     *     description="The URL of the subscription",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Response(
+     *     response="201",
+     *     description="Subscription created"
+     * )
+     * @SWG\Response(
+     *     response="400",
+     *     description="Malformed request body"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
      */
     public function postApiAdminSubscriptions(Subscription $subscription, ConstraintViolationListInterface $validationErrors)
     {
@@ -104,6 +195,59 @@ class SubscriptionController extends AbstractFOSRestController
     /**
      * @Rest\Patch("/api/admin/subscriptions/{id}")
      * @Rest\View(serializerGroups={"adminSubscriptions"});
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the subscription",
+     *     required=true
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="body",
+     *     type="string",
+     *     description="The name of the subscription",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="slogan",
+     *     in="body",
+     *     type="string",
+     *     description="The slogan of the subscription",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="url",
+     *     in="body",
+     *     type="string",
+     *     description="The URL of the subscription",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Response(
+     *     response="200",
+     *     description="Subscription edited"
+     * )
+     * @SWG\Response(
+     *     response="400",
+     *     description="Malformed request body"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Subscription not found"
+     * )
      */
     public function patchApiAdminSubscription(Subscription $subscription, ValidatorInterface $validator, Request $request)
     {
@@ -135,6 +279,29 @@ class SubscriptionController extends AbstractFOSRestController
 
     /**
      * @Rest\Delete("/api/admin/subscriptions/{id}")
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the subscription",
+     *     required=true
+     * )
+     * @SWG\Response(
+     *     response="204",
+     *     description="Subscription deleted"
+     * )
+     * @SWG\Response(
+     *     response="400",
+     *     description="This subscription must have 0 users to be deleted"
+     * )
+     * @SWG\Response(
+     *     response="403",
+     *     description="You don't have permission to perform this action"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Subscription not found"
+     * )
      */
     public function deleteApiAdminSubscription(Subscription $subscription)
     {

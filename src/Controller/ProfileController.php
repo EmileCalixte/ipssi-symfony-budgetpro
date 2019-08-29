@@ -12,6 +12,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,6 +58,10 @@ class ProfileController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/profile")
      * @Rest\View(serializerGroups={"profile"})
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns your profile"
+     * )
      */
     public function getApiProfile()
     {
@@ -66,6 +71,54 @@ class ProfileController extends AbstractFOSRestController
     /**
      * @Rest\Patch("/api/profile")
      * @Rest\View(serializerGroups={"profile"})
+     * @SWG\Parameter(
+     *     name="firstname",
+     *     in="body",
+     *     type="string",
+     *     description="Your firstname",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="lastname",
+     *     in="body",
+     *     type="string",
+     *     description="Your lastname",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="address",
+     *     in="body",
+     *     type="string",
+     *     description="Your address",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="country",
+     *     in="body",
+     *     type="string",
+     *     description="Your country",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Response(
+     *     response="200",
+     *     description="Profile edited"
+     * )
+     * @SWG\Response(
+     *     response="400",
+     *     description="Malformed request body"
+     * )
      */
     public function PatchApiProfile(ValidatorInterface $validator, Request $request, SubscriptionRepository $subscriptionRepository, UserProvider $userProvider)
     {
@@ -115,6 +168,10 @@ class ProfileController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/profile/cards")
      * @Rest\View(serializerGroups={"profileCards"})
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns the list of your cards"
+     * )
      */
     public function getApiProfileCards()
     {
@@ -124,6 +181,21 @@ class ProfileController extends AbstractFOSRestController
     /**
      * @Rest\Get("/api/profile/cards/{id}")
      * @Rest\View(serializerGroups={"profileCards"})
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the card",
+     *     required=true
+     * )
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns details of the card"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Card not found"
+     * )
      */
     public function getApiProfileCard(Card $card)
     {
@@ -136,6 +208,67 @@ class ProfileController extends AbstractFOSRestController
     /**
      * @Rest\Post("/api/profile/cards")
      * @Rest\View(serializerGroups={"profileCards"})
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="body",
+     *     type="string",
+     *     description="The name of the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="creditCardType",
+     *     in="body",
+     *     type="string",
+     *     description="The type of the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="creditCardNumber",
+     *     in="body",
+     *     type="number",
+     *     description="The number of the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="number"
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="currencyCode",
+     *     in="body",
+     *     type="string",
+     *     description="The currency code of the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=3
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="value",
+     *     in="body",
+     *     type="number",
+     *     description="The value on the card",
+     *     required=true,
+     *     @SWG\Schema(
+     *          type="number"
+     *     )
+     * )
+     * @SWG\Response(
+     *     response="201",
+     *     description="Card created"
+     * )
+     * @SWG\Response(
+     *     response="400",
+     *     description="Malformed request body"
+     * )
      */
     public function postApiProfileCard(ValidatorInterface $validator, Request $request, CardProvider $cardProvider)
     {
@@ -179,6 +312,73 @@ class ProfileController extends AbstractFOSRestController
     /**
      * @Rest\Patch("/api/profile/cards/{id}")
      * @Rest\View(serializerGroups={"profileCards"})
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the card",
+     *     required=true
+     * )
+     * @SWG\Parameter(
+     *     name="name",
+     *     in="body",
+     *     type="string",
+     *     description="The name of the card",
+     *     @SWG\Schema(
+     *         type="string",
+     *         maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="creditCardType",
+     *     in="body",
+     *     type="string",
+     *     description="The type of the card",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=255
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="creditCardNumber",
+     *     in="body",
+     *     type="number",
+     *     description="The number of the card",
+     *     @SWG\Schema(
+     *          type="number"
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="currencyCode",
+     *     in="body",
+     *     type="string",
+     *     description="The currency code of the card",
+     *     @SWG\Schema(
+     *          type="string",
+     *          maxLength=3
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="value",
+     *     in="body",
+     *     type="number",
+     *     description="The value on the card",
+     *     @SWG\Schema(
+     *          type="number"
+     *     )
+     * )
+     * @SWG\Response(
+     *     response="200",
+     *     description="Card edited"
+     * )
+     * @SWG\Response(
+     *     response="400",
+     *     description="Malformed request body"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Card not found"
+     * )
      */
     public function patchApiProfileCard(Card $card, ValidatorInterface $validator, Request $request, CardProvider $cardProvider)
     {
@@ -220,6 +420,20 @@ class ProfileController extends AbstractFOSRestController
 
     /**
      * @Rest\Delete("/api/profile/cards/{id}")
+     *     name="id",
+     *     in="path",
+     *     type="number",
+     *     description="The ID of the card",
+     *     required=true
+     * )
+     * @SWG\Response(
+     *     response="204",
+     *     description="Card deleted"
+     * )
+     * @SWG\Response(
+     *     response="404",
+     *     description="Card not found"
+     * )
      */
     public function deleteApiProfileCard(Card $card)
     {

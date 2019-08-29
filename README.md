@@ -41,6 +41,8 @@ php bin/console app:fixtures
 
 ### API endpoints
 
+Full documentation is available at `/api/doc`
+
 #### Anonymous
 
 ##### - Subscriptions
