@@ -86,3 +86,8 @@ php bin/console app:fixtures
 - `POST /admin/cards` Creates a new card
 - `PATCH /admin/cards/{id}` Edits a card
 - `DELETE /admin/cards/{id}` Deletes a card
+
+### Commands
+
+- Use `php bin/console app:add-admin` to grant admin rights to an existing user or to create a new admin user
+- Use `php bin/console app:countcards` to display the number of cards of a user
